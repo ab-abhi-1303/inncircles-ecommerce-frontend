@@ -1,0 +1,34 @@
+<div class="header-content">
+  <div style="display: flex; gap: 1rem; align-items: center">
+    <span class="header-title">{{ pageTitle }}</span>
+    <button
+      *check-permission="['delete-request']"
+      [routerLink]="'/manage-requests'"
+      class="logout-button"
+      type="submit"
+      mat-stroked-button
+    >
+      Manage Requests
+    </button>
+    <button
+      *check-permission="['delete-request']"
+      [routerLink]="'/manage-users'"
+      class="logout-button"
+      type="submit"
+      mat-stroked-button
+    >
+      Manage Users
+    </button>
+  </div>
+  <div>
+    <span>{{ userName }}</span>
+    <button
+      class="logout-button"
+      type="submit"
+      (click)="logout()"
+      mat-stroked-button
+    >
+      Logout
+    </button>
+  </div>
+</div>

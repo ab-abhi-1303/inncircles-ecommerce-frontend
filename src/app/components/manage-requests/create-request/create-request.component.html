@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-card-content>
+    <div class="create-request-form">
+      <mat-card-title class="create-request-title"
+        >Raise request</mat-card-title
+      >
+      <form [formGroup]="requestForm">
+        <mat-form-field>
+          <mat-label>Issue Description</mat-label>
+          <input type="text" matInput formControlName="issueDescription" />
+        </mat-form-field>
+        <span *ngIf="error" class="error">
+          {{ error }}
+        </span>
+      </form>
+      <div class="button">
+        <button
+          type="submit"
+          class="raise-request-button"
+          (click)="onSubmit()"
+          [disabled]="requestForm.invalid"
+          mat-button
+        >
+          Raise Request
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

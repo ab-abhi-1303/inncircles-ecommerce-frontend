@@ -1,0 +1,27 @@
+<mat-card style="height: 10rem; width: 20rem">
+  <mat-card-content style="height: 10rem">
+    <div
+      style="
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      "
+    >
+      <mat-card-title>
+        Are you sure you want to {{ data.message }} this request?
+      </mat-card-title>
+      <div class="buttons-container">
+        <button
+          style="color: red"
+          type="submit"
+          (click)="onCancel()"
+          mat-button
+        >
+          Cancel
+        </button>
+        <button type="submit" (click)="onConfirm()" mat-button>Confirm</button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

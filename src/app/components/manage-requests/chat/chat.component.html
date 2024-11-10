@@ -1,0 +1,26 @@
+<mat-card style="height: 30rem; width: 30rem; padding: 2rem">
+  <form [formGroup]="messageForm">
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+      "
+    >
+      <mat-form-field style="bottom: 0">
+        <input
+          formControlName="messageContent"
+          placeholder="Type a message..."
+          matInput
+        />
+      </mat-form-field>
+      <button (click)="sendMessage()" mat-stroked-button>Send</button>
+    </div>
+    <div *ngFor="let msg of messages">
+      <p [class]="msg.senderId === userId ? 'sent' : 'received'">
+        {{ msg.message }} <span>{{ msg.timestamp | date : "short" }}</span>
+      </p>
+    </div>
+  </form>
+</mat-card>

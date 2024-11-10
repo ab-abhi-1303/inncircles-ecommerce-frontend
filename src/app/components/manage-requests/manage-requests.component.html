@@ -1,0 +1,86 @@
+<app-header [pageTitle]="'Manage Requests'"></app-header>
+
+<div class="manage-requests-page">
+  <button
+    *check-permission="['create-request']"
+    class="create-request-button"
+    type="submit"
+    (click)="openCreateRequestForm()"
+    mat-stroked-button
+  >
+    + Create Request
+  </button>
+  @if (!currentUserRequests.length) {
+  <span>You have no issues raised</span>
+  } @else {
+  <div class="manage-request-cards">
+    @for (request of currentUserRequests; track $index) {
+    <mat-card class="manage-request-card">
+      <mat-card-content style="display: flex; flex-direction: column">
+        <div>
+          <div class="buttons-container">
+            <button
+              *check-permission="['delete-request']"
+              class="delete-button"
+              type="submit"
+              (click)="deleteRequest(request._id!)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+            @if ( currentUserRole!=='Admin') {
+
+            <button
+              class="delete-button"
+              type="submit"
+              (click)="openChatDialog(request._id!)"
+            >
+              Chat
+            </button>
+            }
+          </div>
+          @for (attribute of displayedAttributes; track $index) {
+          <div>
+            <span style="font-weight: 500"> {{ attribute.displayName }}: </span>
+            <span>
+              {{ request[attribute.fieldName] }}
+            </span>
+          </div>
+          }
+        </div>
+        <div class="buttons-container">
+          <button
+            *check-permission="['reject-request']"
+            style="color: red"
+            type="submit"
+            (click)="
+              updateRequestStatus(
+                request._id!,
+                requestStatuses.rejected,
+                'reject'
+              )
+            "
+            mat-button
+          >
+            Reject
+          </button>
+          <button
+            *check-permission="['approve-request']"
+            type="submit"
+            (click)="
+              updateRequestStatus(
+                request._id!,
+                requestStatuses.refundPending,
+                'approve'
+              )
+            "
+            mat-button
+          >
+            Approve
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+  }
+</div>
