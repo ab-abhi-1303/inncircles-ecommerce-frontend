@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '@app/environment';
+import { environment } from 'src/environments/environment';
 import { User, UserCredentials } from '@models/user.model';
 import { UserRoles } from '@utils/enums/user-enums';
 import { Observable } from 'rxjs';
