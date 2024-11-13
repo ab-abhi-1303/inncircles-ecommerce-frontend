@@ -6,6 +6,7 @@ import { User } from '@models/user.model';
 import { UserService } from '@services/user.service';
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component';
 import { userRoles } from '@utils/constants/user-constants';
+import { log } from 'console';
 
 @Component({
   selector: 'app-manage-users',
@@ -40,7 +41,8 @@ export class ManageUsersComponent implements OnInit {
   onRoleChange(userId: string, event: MatSelectChange) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        message: 'delete',
+        message: `edit role to '${event.value}' for`,
+        entity: `user`,
       },
     });
 
@@ -54,12 +56,12 @@ export class ManageUsersComponent implements OnInit {
             .updateUserRole(updatedUser)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
-              next: (data) => {
-                const index = this.usersList.findIndex((user) => {
-                  return data._id === userId;
+              next: () => {
+                const index = this.usersList.findIndex((user: any) => {
+                  return user._id === userId;
                 });
-
                 this.usersList[index].role = event.value;
+                this.dataSource = [...this.usersList];
               },
             });
         } else {

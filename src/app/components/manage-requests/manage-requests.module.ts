@@ -7,6 +7,7 @@ import { SharedModule } from '@shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateRequestComponent } from './create-request/create-request.component';
 import { ChatComponent } from './chat/chat.component';
+import { ChatListComponent } from './chat-list/chat-list.component';
 
 const routes: Route[] = [
   {
@@ -20,6 +21,7 @@ const routes: Route[] = [
     ManageRequestsComponent,
     CreateRequestComponent,
     ChatComponent,
+    ChatListComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -29,6 +31,11 @@ const routes: Route[] = [
     MaterialModule,
     SharedModule,
   ],
-  exports: [ManageRequestsComponent, CreateRequestComponent, ChatComponent],
+  exports: [
+    ManageRequestsComponent,
+    CreateRequestComponent,
+    ChatComponent,
+    ChatListComponent,
+  ],
 })
 export class ManageRequestsModule {}

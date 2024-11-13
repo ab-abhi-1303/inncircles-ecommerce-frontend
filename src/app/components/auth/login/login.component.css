@@ -19,7 +19,8 @@ mat-card-content {
 
 .button {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .login-form {

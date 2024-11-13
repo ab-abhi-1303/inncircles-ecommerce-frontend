@@ -3,13 +3,7 @@
 html,
 body {
   height: 100%;
-  background: rgb(238, 174, 202);
-  background: linear-gradient(
-    90deg,
-    rgba(238, 174, 202, 0.9389005602240896) 0%,
-    rgba(226, 176, 206, 0.9024859943977591) 0%,
-    rgba(148, 187, 233, 1) 100%
-  );
+  background: white;
 }
 body {
   margin: 0;

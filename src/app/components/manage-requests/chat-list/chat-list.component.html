@@ -1,0 +1,26 @@
+<div class="chats-container">
+  <mat-card class="chat-list-card">
+    <mat-card-content class="chat-list-card-content">
+      @for (request of data.requests; track $index) {
+      <div
+        class="customer-request"
+        [ngClass]="{ 'selected-chat': this.selectedRequestId === request._id }"
+        (click)="setChatDetails(request._id!)"
+      >
+        <span
+          >Name:
+          {{ request.customerUsername }}
+        </span>
+        <span
+          >Issue Description:
+          {{ request.issueDescription }}
+        </span>
+      </div>
+      }
+    </mat-card-content>
+  </mat-card>
+  <app-chat
+    [requestId]="selectedRequestId"
+    [requestStatus]="selectedRequestStatus"
+  ></app-chat>
+</div>

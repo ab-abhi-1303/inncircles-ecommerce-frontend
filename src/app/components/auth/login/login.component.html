@@ -2,8 +2,10 @@
   <mat-card>
     <mat-card-content>
       <div class="login-form">
-        <mat-card-title class="login-title">Login</mat-card-title>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-card-title class="login-title">{{
+          currentPath === "login" ? "Login" : "Register"
+        }}</mat-card-title>
+        <form [formGroup]="loginForm">
           <mat-form-field>
             <mat-label>Username</mat-label>
             <input type="text" matInput formControlName="userName" />
@@ -16,8 +18,23 @@
             {{ error }}
           </span>
           <div class="button">
-            <button type="submit" [disabled]="loginForm.invalid" mat-button>
-              Login
+            <a
+              style="color: black"
+              [routerLink]="currentPath === 'login' ? '/register' : '/login'"
+            >
+              {{
+                currentPath !== "login"
+                  ? "Already have an account? Login"
+                  : "Don't have an account? Register"
+              }}
+            </a>
+            <button
+              (click)="currentPath === 'login' ? onSignIn() : onSignUp()"
+              type="submit"
+              [disabled]="loginForm.invalid"
+              mat-button
+            >
+              {{ currentPath === "login" ? "Login" : "Register" }}
             </button>
           </div>
         </form>

@@ -1,26 +1,53 @@
-<mat-card style="height: 30rem; width: 30rem; padding: 2rem">
-  <form [formGroup]="messageForm">
-    <div
-      style="
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: row;
-      "
-    >
-      <mat-form-field style="bottom: 0">
-        <input
-          formControlName="messageContent"
-          placeholder="Type a message..."
-          matInput
-        />
+<mat-card>
+  <mat-card-content class="chat-card">
+    <div class="status-timeline">
+      @for (requestStatusInfo of requestStatusTimeline; track $index) {
+      <div class="status-point-container">
+        <div
+          [ngClass]="{
+            'current-status': requestStatus === requestStatusInfo.status
+          }"
+          class="status-point"
+          [ngStyle]="{ background: requestStatusInfo.color }"
+        ></div>
+        <div>{{ requestStatusInfo.status }}</div>
+      </div>
+      }
+    </div>
+    <div class="messages-container">
+      @for (message of messages; track $index) {
+      <div
+        [ngClass]="{
+          'sent-message-container': message.senderId === userId
+        }"
+      >
+        <div
+          [ngClass]="
+            message.senderId === userId ? 'sent-message' : 'received-message'
+          "
+        >
+          <div class="message">{{ message.message }}</div>
+          <div class="message-timestamp">
+            {{ message.timestamp | date : "short" }}
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    <form [formGroup]="messageForm" class="chat-container">
+      <mat-form-field appearance="outline" style="width: 25rem">
+        <mat-label>Type a message...</mat-label>
+        <div class="chat-input">
+          <input
+            style="height: 1rem"
+            formControlName="messageContent"
+            matInput
+          />
+          <button (click)="sendMessage()" class="send-message-button">
+            <mat-icon matSuffix>send</mat-icon>
+          </button>
+        </div>
       </mat-form-field>
-      <button (click)="sendMessage()" mat-stroked-button>Send</button>
-    </div>
-    <div *ngFor="let msg of messages">
-      <p [class]="msg.senderId === userId ? 'sent' : 'received'">
-        {{ msg.message }} <span>{{ msg.timestamp | date : "short" }}</span>
-      </p>
-    </div>
-  </form>
+    </form>
+  </mat-card-content>
 </mat-card>

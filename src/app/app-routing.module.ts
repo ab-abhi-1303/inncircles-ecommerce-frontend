@@ -16,6 +16,10 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'register',
+    component: LoginComponent,
+  },
+  {
     path: 'manage-requests',
     loadChildren: () =>
       import('./components/manage-requests/manage-requests.module').then(

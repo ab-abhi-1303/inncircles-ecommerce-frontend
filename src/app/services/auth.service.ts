@@ -8,8 +8,6 @@ import { Observable } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { STORAGE_KEYS } from '@utils/constants/local-storage-constants';
 
-const MEDIA_TYPE = 'application/vnd.api+json';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -26,12 +24,11 @@ export class AuthService {
 
   validateUser(user: UserCredentials): Observable<User> {
     const url = `${environment.apiURL}/login`;
-    // const options = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': MEDIA_TYPE,
-    //     Accept: MEDIA_TYPE,
-    //   }),
-    // };
+    return this.http.post<User>(url, user);
+  }
+
+  registerUser(user: UserCredentials): Observable<User> {
+    const url = `${environment.apiURL}/users/create`;
     return this.http.post<User>(url, user);
   }
 }

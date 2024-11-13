@@ -5,12 +5,15 @@ import { Request } from '@models/request.model';
 import { RequestsService } from '@services/requests.service';
 import { UserUtilService } from '@services/user-util.service';
 import {
+  displayedColumnsByRole,
   requestAttributes,
   RequestStatus,
 } from '@utils/constants/request-constants';
 import { CreateRequestComponent } from './create-request/create-request.component';
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component';
 import { ChatComponent } from './chat/chat.component';
+import { log } from 'console';
+import { ChatListComponent } from './chat-list/chat-list.component';
 
 @Component({
   selector: 'app-manage-requests',
@@ -20,8 +23,10 @@ import { ChatComponent } from './chat/chat.component';
 export class ManageRequestsComponent implements OnInit {
   currentUserRequests: Request[] = [];
   displayedAttributes = requestAttributes;
+  displayedColumns: string[] = [];
   destroyRef = inject(DestroyRef);
   requestStatuses = RequestStatus;
+  dataSource: Request[] = [];
   currentUserRole = '';
   private userId = '';
   constructor(
@@ -34,6 +39,7 @@ export class ManageRequestsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.displayedColumns = displayedColumnsByRole[this.currentUserRole];
     this.getRequests();
   }
 
@@ -44,22 +50,36 @@ export class ManageRequestsComponent implements OnInit {
       .subscribe({
         next: (requestsData) => {
           this.currentUserRequests = requestsData;
+          this.dataSource = [...this.currentUserRequests];
         },
       });
   }
 
-  openChatDialog(requestId: string) {
-    this.dialog.open(ChatComponent, {
-      data: {
-        requestId: requestId,
-      },
-    });
+  openChatDialog(requestId: string, requestStatus: string) {
+    if (this.currentUserRole === 'Customer')
+      this.dialog.open(ChatComponent, {
+        data: {
+          requestId: requestId,
+          requestStatus: requestStatus,
+        },
+      });
+    else
+      this.dialog.open(ChatListComponent, {
+        data: {
+          requests: this.currentUserRequests,
+          currentRequestId: requestId,
+          requestStatus: requestStatus,
+        },
+        width: '45rem',
+        maxWidth: '45rem',
+      });
   }
 
   openConfirmDialog(dialogMessage: string) {
     return this.dialog.open(ConfirmDialogComponent, {
       data: {
         message: dialogMessage,
+        entity: 'request',
       },
     });
   }
@@ -87,6 +107,7 @@ export class ManageRequestsComponent implements OnInit {
                   return req._id === updatedRequest._id;
                 });
                 this.currentUserRequests[index].status = updatedStatus;
+                this.dataSource = [...this.currentUserRequests];
               },
             });
         }
@@ -110,6 +131,7 @@ export class ManageRequestsComponent implements OnInit {
                     return req._id !== requestId;
                   }
                 );
+                this.dataSource = [...this.currentUserRequests];
               },
             });
         }
@@ -124,6 +146,7 @@ export class ManageRequestsComponent implements OnInit {
       .subscribe((data: Request) => {
         if (data) {
           this.currentUserRequests.push(data);
+          this.dataSource = [...this.currentUserRequests];
           window.alert(
             'Request successfully created! Our support engineers will review it on priority!'
           );

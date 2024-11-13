@@ -14,73 +14,96 @@
   <span>You have no issues raised</span>
   } @else {
   <div class="manage-request-cards">
-    @for (request of currentUserRequests; track $index) {
-    <mat-card class="manage-request-card">
-      <mat-card-content style="display: flex; flex-direction: column">
-        <div>
-          <div class="buttons-container">
+    <div style="padding: 1rem; width: 40rem">
+      @if (dataSource.length) {
+
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        @for (attribute of displayedAttributes; track $index) {
+        <ng-container [matColumnDef]="attribute.fieldName">
+          <th mat-header-cell *matHeaderCellDef>{{ attribute.displayName }}</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element[attribute.fieldName] }}
+          </td>
+        </ng-container>
+        }
+        <ng-container
+          *check-permission="['approve-request']"
+          [matColumnDef]="'approve'"
+        >
+          <th mat-header-cell *matHeaderCellDef>{{ "Approve Request" }}</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              type="submit"
+              (click)="
+                updateRequestStatus(
+                  element._id!,
+                  requestStatuses.refundPending,
+                  'approve'
+                )
+              "
+              mat-button
+            >
+              Approve
+            </button>
+          </td>
+        </ng-container>
+        <ng-container
+          *check-permission="['reject-request']"
+          [matColumnDef]="'reject'"
+        >
+          <th mat-header-cell *matHeaderCellDef>{{ "Reject Request" }}</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              style="color: red"
+              type="submit"
+              (click)="
+                updateRequestStatus(
+                  element._id!,
+                  requestStatuses.refundPending,
+                  'reject'
+                )
+              "
+              mat-button
+            >
+              Reject
+            </button>
+          </td>
+        </ng-container>
+        <ng-container
+          *check-permission="['delete-request']"
+          [matColumnDef]="'delete'"
+        >
+          <th mat-header-cell *matHeaderCellDef>{{ "Delete Request" }}</th>
+          <td mat-cell *matCellDef="let element">
             <button
               *check-permission="['delete-request']"
               class="delete-button"
               type="submit"
-              (click)="deleteRequest(request._id!)"
+              (click)="deleteRequest(element._id!)"
             >
               <mat-icon>delete</mat-icon>
             </button>
-            @if ( currentUserRole!=='Admin') {
-
+          </td>
+        </ng-container>
+        @if (currentUserRole!=='Admin') {
+        <ng-container [matColumnDef]="'chat'">
+          <th mat-header-cell *matHeaderCellDef>{{ "Chat" }}</th>
+          <td mat-cell *matCellDef="let element">
             <button
-              class="delete-button"
+              style="cursor: pointer"
               type="submit"
-              (click)="openChatDialog(request._id!)"
+              (click)="openChatDialog(element._id!, element.status)"
             >
-              Chat
+              <mat-icon>message</mat-icon>
             </button>
-            }
-          </div>
-          @for (attribute of displayedAttributes; track $index) {
-          <div>
-            <span style="font-weight: 500"> {{ attribute.displayName }}: </span>
-            <span>
-              {{ request[attribute.fieldName] }}
-            </span>
-          </div>
-          }
-        </div>
-        <div class="buttons-container">
-          <button
-            *check-permission="['reject-request']"
-            style="color: red"
-            type="submit"
-            (click)="
-              updateRequestStatus(
-                request._id!,
-                requestStatuses.rejected,
-                'reject'
-              )
-            "
-            mat-button
-          >
-            Reject
-          </button>
-          <button
-            *check-permission="['approve-request']"
-            type="submit"
-            (click)="
-              updateRequestStatus(
-                request._id!,
-                requestStatuses.refundPending,
-                'approve'
-              )
-            "
-            mat-button
-          >
-            Approve
-          </button>
-        </div>
-      </mat-card-content>
-    </mat-card>
-    }
+          </td>
+        </ng-container>
+        }
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      }
+    </div>
   </div>
   }
 </div>
