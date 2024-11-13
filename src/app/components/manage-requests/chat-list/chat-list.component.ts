@@ -14,13 +14,13 @@ export class ChatListComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public data: {
       requests: Request[];
-      currentRequestId: string;
+      requestId: string;
       requestStatus: string;
     }
   ) {}
 
   ngOnInit(): void {
-    this.selectedRequestId = this.data.currentRequestId;
+    this.selectedRequestId = this.data.requestId;
     this.selectedRequestStatus = this.data.requestStatus;
   }
 

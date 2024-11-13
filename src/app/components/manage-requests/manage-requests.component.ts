@@ -67,7 +67,7 @@ export class ManageRequestsComponent implements OnInit {
       this.dialog.open(ChatListComponent, {
         data: {
           requests: this.currentUserRequests,
-          currentRequestId: requestId,
+          requestId: requestId,
           requestStatus: requestStatus,
         },
         width: '45rem',
