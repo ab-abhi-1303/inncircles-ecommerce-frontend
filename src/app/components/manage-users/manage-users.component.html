@@ -13,7 +13,7 @@
           (selectionChange)="onRoleChange(element._id, $event)"
           [placeholder]="element.role"
         >
-          @for (role of allUserRoles; track $index) { @if (element.role!==role)
+          @for (role of allUserRoles; track $index) { @if (element.role !== role)
           {
           <mat-option [value]="role">
             {{ role }}

@@ -63,6 +63,9 @@ export class ManageUsersComponent implements OnInit {
                 this.usersList[index].role = event.value;
                 this.dataSource = [...this.usersList];
               },
+              error: () => {
+                event.source.writeValue(null);
+              }
             });
         } else {
           event.source.writeValue(null);
